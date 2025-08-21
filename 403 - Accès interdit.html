@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#7f1d1d" />
+  <title>403 – Accès interdit</title>
+  <style>
+    :root{
+      /* Thème rouge fort */
+      --bg: #120202;            /* très sombre, tirant vers bordeaux */
+      --panel: #1f0202;         /* panneau sombre */
+      --text: #fee2e2;          /* rose très clair lisible */
+      --muted: #fecaca;         /* rose pâle */
+      --accent: #f87171;        /* rouge clair (tailwind rose-400/500 vibe) */
+      --accent-2: #ef4444;      /* rouge vif */
+      --shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 800px at 70% -10%, rgba(248,113,113,.15), transparent 60%),
+        radial-gradient(900px 600px at -10% 110%, rgba(239,68,68,.15), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      display:grid; place-items:center;
+    }
+    main{
+      width:min(920px, 92vw);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)), var(--panel);
+      border:1px solid rgba(248,113,113,.25);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding: clamp(20px, 4vw, 36px);
+    }
+    header{display:flex; align-items:center; gap:16px; margin-bottom: 12px}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:4px 10px; border-radius:999px; background:rgba(248,113,113,.10); border:1px solid rgba(248,113,113,.40); color:var(--accent)}
+    .code{font-weight:700; letter-spacing:.5px}
+    h1{font-size: clamp(28px, 4.2vw, 42px); line-height:1.1; margin: 6px 0 8px}
+    p.lead{color:var(--muted); margin:0 0 12px; font-size: clamp(16px, 2.2vw, 18px)}
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(248,113,113,.18);
+      border-radius: calc(var(--radius) - 6px);
+      box-shadow: var(--shadow);
+      padding:16px; margin: 14px 0;
+    }
+    dl{ display:grid; grid-template-columns: max-content 1fr; gap:8px 14px; margin:0 }
+    dt{color:var(--muted)}
+    dd{margin:0; font-variant-numeric: tabular-nums}
+
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px }
+    button{
+      appearance:none; border:none; cursor:pointer; color:var(--text);
+      background: linear-gradient(180deg, rgba(248,113,113,.20), rgba(248,113,113,.10));
+      border:1px solid rgba(239,68,68,.45);
+      border-radius: 12px; padding: 10px 14px; font-weight:600;
+      box-shadow: var(--shadow); transition: transform .05s ease, filter .2s ease;
+    }
+    button:hover{ filter:brightness(1.04) }
+    button:active{ transform: translateY(1px) }
+
+    footer{ margin-top: 12px; color:var(--muted); font-size: 14px }
+    .offline{ display:none; align-items:center; gap:8px; margin: 8px 0 0; color:#fecaca }
+    .offline svg{ flex:0 0 auto }
+
+    .icon{ width: 26px; height: 26px }
+  </style>
+</head>
+<body>
+  <main role="main" aria-labelledby="title">
+    <header>
+      <span class="badge" aria-label="Code d'erreur">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l9 5v8l-9 5-9-5V8l9-5z" stroke="currentColor" stroke-width="1.4" opacity=".8"/>
+          <path d="M8 13h8M8 10h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span class="code">403</span> Accès interdit
+      </span>
+    </header>
+
+    <h1 id="title">Accès refusé.</h1>
+    <p class="lead">Votre requête a été bloquée par nos mécanismes de sécurité ou vous n'avez pas l'autorisation d'accéder à cette ressource.</p>
+
+    <div class="card" aria-live="polite">
+      <h2 style="margin:0 0 10px; font-size:18px">Votre requête</h2>
+      <dl>
+        <dt>URL :</dt>
+        <dd><span id="req-url"><em>Chargement…</em></span></dd>
+
+        <dt>Horodatage :</dt>
+        <dd><span id="ts">—</span></dd>
+
+        <dt>Zone :</dt>
+        <dd><span id="tz">—</span></dd>
+
+        <dt>ID corrélation :</dt>
+        <dd><span id="cid">—</span></dd>
+      </dl>
+
+      <div class="offline" id="offline">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true"><path d="M3 3l18 18M20.5 8.5A8.5 8.5 0 006.4 6.4M16.9 12.9a4.5 4.5 0 00-5.8-5.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Vous semblez hors ligne.</span>
+      </div>
+
+      <div class="actions">
+        <button id="copy">Copier les détails</button>
+      </div>
+    </div>
+
+    <footer>
+      &copy; <span id="year"></span> — Si vous pensez qu'il s'agit d'une erreur, contactez l'administrateur en indiquant l'ID de corrélation.
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      const $ = (id) => document.getElementById(id);
+      const now = new Date();
+
+      // URL
+      const url = window.location.href;
+      $('req-url').textContent = url;
+
+      // Horodatage et fuseau
+      $('ts').textContent = now.toLocaleString('fr-FR', { hour12: false });
+      $('tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || '—';
+
+      // Correlation ID (à reporter côté logs WAF)
+      function correlationId(bytes = 8){
+        const buf = new Uint8Array(bytes);
+        (window.crypto || window.msCrypto).getRandomValues(buf);
+        return Array.from(buf).map(b=>b.toString(16).padStart(2,'0')).join('');
+      }
+      const cid = correlationId();
+      $('cid').textContent = cid;
+
+      // Copier détails
+      $('copy').addEventListener('click', async () => {
+        const payload = [
+          'Incident 403',
+          'URL: ' + url,
+          'Horodatage: ' + $('ts').textContent,
+          'Fuseau: ' + $('tz').textContent,
+          'ID corrélation: ' + cid,
+          'User-Agent: ' + navigator.userAgent
+        ].join('\n');
+        try {
+          await navigator.clipboard.writeText(payload);
+          $('copy').textContent = 'Copié !';
+          setTimeout(()=>{$('copy').textContent = 'Copier les détails';}, 1800);
+        } catch(e){
+          alert('Copie impossible. Voici le texte:\n\n' + payload);
+        }
+      });
+
+      // Etat offline/online (utile pour diagnostiquer un faux positif réseau)
+      function updateOnline(){
+        $('offline').style.display = navigator.onLine ? 'none' : 'flex';
+      }
+      window.addEventListener('online', updateOnline);
+      window.addEventListener('offline', updateOnline);
+      updateOnline();
+
+      // Année footer
+      $('year').textContent = new Date().getFullYear() + " - Nekocorp";
+    })();
+  </script>
+</body>
+</html>

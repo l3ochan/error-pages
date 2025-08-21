@@ -1,0 +1,94 @@
+<!-- THIS PAGE WAS SPECIFICALLY MADE TO WORK WITH SAFELINE WAF -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#3b0a45" />
+  <title>468 – Vérification en cours</title>
+  <style>
+    :root{
+      /* Thème violet foncé */
+      --bg: #16001e;
+      --panel: #2a0138;
+      --text: #f3e8ff;
+      --muted: #c4b5fd;
+      --accent: #a78bfa;
+      --accent-2: #c084fc;
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 800px at 70% -10%, rgba(167,139,250,.15), transparent 60%),
+        radial-gradient(900px 600px at -10% 110%, rgba(192,132,252,.15), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      display:grid; place-items:center;
+    }
+    main{
+      width:min(500px, 92vw);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)), var(--panel);
+      border:1px solid rgba(148,163,184,.25);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding: clamp(20px, 4vw, 36px);
+      text-align:center;
+    }
+    header{display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom: 12px}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:4px 10px; border-radius:999px; background:rgba(167,139,250,.10); border:1px solid rgba(167,139,250,.35); color:var(--accent)}
+    .code{font-weight:700; letter-spacing:.5px}
+    h1{font-size: clamp(26px, 4vw, 40px); line-height:1.1; margin: 12px 0 10px}
+    p.lead{color:var(--muted); margin:0 0 20px; font-size: clamp(16px, 2.2vw, 18px)}
+
+    .loader{
+      margin:20px auto;
+      border:6px solid rgba(255,255,255,.1);
+      border-top:6px solid var(--accent);
+      border-radius:50%;
+      width:60px; height:60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    footer{ margin-top: 18px; color:var(--muted); font-size: 14px }
+    .icon{ width: 26px; height: 26px }
+  </style>
+</head>
+<body>
+  <main role="main" aria-labelledby="title">
+    <header>
+      <span class="badge" aria-label="Code d'erreur">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l9 5v8l-9 5-9-5V8l9-5z" stroke="currentColor" stroke-width="1.4" opacity=".8"/>
+          <path d="M8 13h8M8 10h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span class="code">468</span> Vérification en cours
+      </span>
+    </header>
+
+    <h1 id="title">Veuillez patienter…</h1>
+    <p class="lead">Nous vérifions actuellement que vous n'êtes pas un robot.</p>
+
+    <div class="loader" aria-label="Chargement"></div>
+
+    <footer>
+      &copy; <span id="year"></span>
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>

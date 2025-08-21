@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#3b0a45" />
+  <title id="page-title">Erreur</title>
+  <style>
+    :root{
+      --bg: #16001e;           /* violet très foncé */
+      --panel: #2a0138;        /* violet sombre */
+      --text: #f3e8ff;         /* violet très clair */
+      --muted: #c4b5fd;        /* lavande */
+      --accent: #a78bfa;       /* violet clair */
+      --accent-2: #c084fc;     /* violet plus lumineux */
+      --warning: #f59e0b;      /* amber */
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 70% -10%, rgba(167,139,250,.15), transparent 60%),
+                  radial-gradient(900px 600px at -10% 110%, rgba(192,132,252,.15), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      display:grid; place-items:center;
+    }
+    main{
+      width:min(920px, 92vw);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)), var(--panel);
+      border:1px solid rgba(148,163,184,.15);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding: clamp(20px, 4vw, 36px);
+    }
+    header{display:flex; align-items:center; gap:16px; margin-bottom: 12px}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:4px 10px; border-radius:999px; background:rgba(167,139,250,.10); border:1px solid rgba(167,139,250,.35); color:var(--accent)}
+    .code{font-weight:700; letter-spacing:.5px}
+    h1{font-size: clamp(28px, 4.2vw, 42px); line-height:1.1; margin: 6px 0 8px}
+    p.lead{color:var(--muted); margin:0 0 12px; font-size: clamp(16px, 2.2vw, 18px)}
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(148,163,184,.16);
+      border-radius: calc(var(--radius) - 6px);
+      box-shadow: var(--shadow);
+      padding:16px; margin: 14px 0;
+    }
+    dl{ display:grid; grid-template-columns: max-content 1fr; gap:8px 14px; margin:0 }
+    dt{color:var(--muted)}
+    dd{margin:0; font-variant-numeric: tabular-nums}
+
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px }
+    button, a.button{
+      appearance:none; border:none; cursor:pointer; text-decoration:none; color:var(--text);
+      background: linear-gradient(180deg, rgba(167,139,250,.18), rgba(167,139,250,.10));
+      border:1px solid rgba(167,139,250,.45);
+      border-radius: 12px; padding: 10px 14px; font-weight:600;
+      box-shadow:var(--shadow); transition: transform .05s ease, filter .2s ease;
+    }
+    button:hover, a.button:hover{ filter:brightness(1.04) }
+    button:active, a.button:active{ transform: translateY(1px) }
+
+    .subtle{ background: linear-gradient(180deg, rgba(148,163,184,.10), rgba(148,163,184,.06)); border-color: rgba(148,163,184,.35); color: #e5e7eb }
+    .warn{ background: linear-gradient(180deg, rgba(245,158,11,.18), rgba(245,158,11,.10)); border-color: rgba(245,158,11,.45); color:#fef3c7 }
+    .info{ background: linear-gradient(180deg, rgba(192,132,252,.18), rgba(192,132,252,.10)); border-color: rgba(192,132,252,.45); color:#faf5ff }
+
+    footer{ margin-top: 12px; color:var(--muted); font-size: 14px }
+    .offline{ display:none; align-items:center; gap:8px; margin: 8px 0 0; color:#fecaca }
+    .offline svg{ flex:0 0 auto }
+
+    .icon{ width: 26px; height: 26px }
+  </style>
+</head>
+<body>
+  <main role="main" aria-labelledby="title">
+    <header>
+      <span class="badge" aria-label="Code d'erreur">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l9 5v8l-9 5-9-5V8l9-5z" stroke="currentColor" stroke-width="1.4" opacity=".8"/>
+          <path d="M8 13h8M8 10h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span class="code" id="error-code">—</span> <span id="error-label">Erreur</span>
+      </span>
+    </header>
+
+    <h1 id="title">Un problème est survenu.</h1>
+    <p class="lead" id="lead-text">Veuillez réessayer ultérieurement.</p>
+
+    <div class="card" aria-live="polite">
+      <h2 style="margin:0 0 10px; font-size:18px">Votre requête</h2>
+      <dl>
+        <dt>URL :</dt>
+        <dd><span id="req-url"><em>Chargement…</em></span></dd>
+
+        <dt>Horodatage :</dt>
+        <dd><span id="ts">—</span></dd>
+
+        <dt>Zone :</dt>
+        <dd><span id="tz">—</span></dd>
+
+        <dt>ID corrélation :</dt>
+        <dd><span id="cid">—</span></dd>
+      </dl>
+
+      <div class="offline" id="offline">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true"><path d="M3 3l18 18M20.5 8.5A8.5 8.5 0 006.4 6.4M16.9 12.9a4.5 4.5 0 00-5.8-5.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Vous semblez hors ligne.</span>
+      </div>
+
+      <div class="actions">
+        <button id="retry">Réessayer</button>
+        <button id="copy" class="subtle">Copier les détails</button>
+        <a href="mailto:email@domain.tld?subject=Incident" id="support-link" class="button warn">Contacter le support</a> <!-- <--------------------------------------------------  add webmaster email there ici-->
+        <a href="https://status.domain.tld" target="_blank" class="button info">Voir le statut des serveurs</a> <!-- <--------------------------------------------------  add status page there ici-->
+      </div>
+    </div>
+
+    <footer>
+      &copy; <span id="year"></span> — Merci pour votre patience.
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      const $ = (id) => document.getElementById(id);
+      const now = new Date();
+
+      // URL
+      const url = window.location.href;
+      $('req-url').textContent = url;
+
+      // Horodatage et fuseau
+      $('ts').textContent = now.toLocaleString('fr-FR', { hour12: false });
+      $('tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || '—';
+
+      // Correlation ID
+      function correlationId(bytes = 8){
+        const buf = new Uint8Array(bytes);
+        (window.crypto || window.msCrypto).getRandomValues(buf);
+        return Array.from(buf).map(b=>b.toString(16).padStart(2,'0')).join('');
+      }
+      const cid = correlationId();
+      $('cid').textContent = cid;
+
+      // Texte dynamique en fonction du code d'erreur (si transmis via query ?code=...)
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code') || (document.title.match(/\d{3}/) || [])[0] || '500';
+
+      const messages = {
+        '400': {label: 'Requête invalide', lead: 'La requête envoyée au serveur est incorrecte.'},
+        '429': {label: 'Trop de requêtes', lead: 'Vous avez effectué trop de requêtes. Merci d’attendre avant de réessayer.'},
+        '500': {label: 'Erreur interne', lead: 'Le serveur a rencontré une erreur inattendue.'},
+        '502': {label: 'Mauvaise passerelle', lead: 'Le proxy a reçu une réponse invalide en amont.'},
+        '503': {label: 'Service indisponible', lead: 'Notre service est momentanément indisponible. Merci de réessayer dans un instant.'},
+        '504': {label: 'Délai dépassé', lead: 'Le serveur en amont n’a pas répondu à temps.'}
+      };
+
+      const msg = messages[code] || messages['500'];
+      $('error-code').textContent = code;
+      $('error-label').textContent = msg.label;
+      $('title').textContent = msg.label;
+      $('lead-text').textContent = msg.lead;
+
+      // Bouton retry
+      $('retry').addEventListener('click', () => {
+        const u = new URL(window.location.href);
+        u.searchParams.set('retry', Date.now());
+        window.location.replace(u.toString());
+      });
+
+      // Copier détails
+      $('copy').addEventListener('click', async () => {
+        const payload = [
+          'Incident ' + code,
+          'URL: ' + url,
+          'Horodatage: ' + $('ts').textContent,
+          'Fuseau: ' + $('tz').textContent,
+          'ID corrélation: ' + cid,
+          'User-Agent: ' + navigator.userAgent
+        ].join('\n');
+        try {
+          await navigator.clipboard.writeText(payload);
+          $('copy').textContent = 'Copié !';
+          setTimeout(()=>{$('copy').textContent = 'Copier les détails';}, 1800);
+        } catch(e){
+          alert('Copie impossible. Voici le texte:\n\n' + payload);
+        }
+      });
+
+      // Etat offline/online
+      function updateOnline(){
+        $('offline').style.display = navigator.onLine ? 'none' : 'flex';
+      }
+      window.addEventListener('online', updateOnline);
+      window.addEventListener('offline', updateOnline);
+      updateOnline();
+
+      // Année footer
+      $('year').textContent = new Date().getFullYear() + " - Nekocorp";
+
+      $('retry').focus();
+    })();
+  </script>
+</body>
+</html>
